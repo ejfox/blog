@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ title }}</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:600|PT+Sans+Narrow:700" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/style.css">
+  <meta name="description" content="{{ description }}">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/wavesurfer.min.js"></script>
+</head>
+<body>
+  <div id="container">
+  <header>
+    <p>
+      <a href="/">Home</a>
+    </p>
+
+  </header>
+  <h1>{{ title }}</h1>
+  <time>{{ date }}</time>
+
+  {{#if audio}}
+  <div id="waveform" class="loading">
+
+  </div>
+  <button id="play-pause" style="display: none;">Play</button>
+  <script>
+  var wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: '#999',
+    progressColor: '#000',
+    height: '280',
+    cursorColor: '#40c6f7'
+    //,barWidth: 5
+  });
+
+  $play = $('#play-pause')
+
+  $play.click(function(){
+    if ($(this).hasClass('playing')) {
+      wavesurfer.pause();
+      $(this).text('Play');
+    } else {
+      wavesurfer.play();
+      $(this).text('Pause');
+    }
+  })
+
+  wavesurfer.load('audio/{{audio}}');
+
+  wavesurfer.on('ready', function () {
+    $('#waveform').removeClass('loading')
+    $('[data-skipto]').each( function() {
+      $(this).addClass('skipto')
+    })
+    $play.show(100);
+    wavesurfer.play();
+
+    $('[data-skipto]').on('click', function() {
+      skipTo = +$(this).data('skipto')
+      if ($(this).data('skipto-minutes')) {
+        var minutes = $(this).data('skipto-minutes')
+        skipTo += minutes * 60
+      }
+      wavesurfer.seekTo(0)
+      wavesurfer.skip(skipTo)
+    })
+  });
+
+  wavesurfer.on('audioprocess', function () {
+    if ($play.text() !== 'Pause') {
+      $play.text('Pause')
+    }
+    $play.addClass('playing')
+  });
+
+  wavesurfer.on('pause', function () {
+    $play.removeClass('playing')
+  });
+
+  wavesurfer.on('finish', function () {
+    $play.removeClass('playing')
+    wavesurfer.seekTo(0)
+  });
+
+  </script>
+  {{/if}}
+
+  {{{ contents }}}
+
+  {{#each images}}
+    <h1>hi</h1>
+    <li>
+      <img src="{{this.path}}">
+    </li>
+  {{/each}}
+</div>
+</body>
+</html>

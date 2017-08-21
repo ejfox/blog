@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:600|PT+Sans+Narrow:700" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="container">
+  <!--
+  <header>
+    <p>
+      <a href="/">Home</a>
+    </p>
+  </header>
+-->
+  <h1>{{ title }}</h1>
+  <p>{{ description }}</p>
+
+  {{{ contents }}}
+
+  <h3>Articles</h3>
+  {{#each articles}}
+    <li>
+      <time>{{this.date}}</time>
+      <a href="{{this.path}}">{{this.title}}</a>
+    </li>
+  {{/each}}
+{{#if music}}
+<h3>Music</h3>
+{{/if}}
+  {{#each music}}
+    <li>
+      <time>{{this.date}}</time>
+      <a href="{{this.path}}">{{this.title}}</a>
+    </li>
+  {{/each}}
+</div>
+</body>
+</html>
