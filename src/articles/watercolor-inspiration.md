@@ -1,6 +1,6 @@
 ---
 title: Watercolor Inspiration Sketchbook for Generative Art
-date: 2012-08-20
+date: 2012-08-22
 layout: post.html
 collection: articles
 ---
